@@ -253,11 +253,16 @@
                 const horaFin = $("#horaFin").val();
                 const lluvia = $("#flexSwitchCheckLluvia").prop("checked");
 
+                //obtiene el valor de la imagen seleccionada en cb
+                const val = $(this).val();
+                const text = $(this).find('option:selected').text();
+
                 // Validar que al menos un campo esté seleccionado
                 if (temperature || humidity || (horaInicio && horaFin) || lluvia) {
                     formValid = true;
                 } else {
                     alert("Debe seleccionar al menos un parámetro (Temperatura, Humedad, Hora o Lluvia).");
+                    return;
                 }
 
                 // Verificar que horaInicio y horaFin estén llenos
@@ -267,7 +272,34 @@
                 }
 
                 if (formValid) {
-                    alert("Formulario enviado correctamente.");
+                    // Preparar los datos para enviar
+                    const selectedValue = $("#cboSenalamientos").val();
+                    const dataToSend = {
+                        type: "condicional",
+                        name: $("#cboSenalamientos option:selected").text(),
+                        temperature: temperature ? parseFloat(temperature) : null,
+                        humidity: humidity ? parseFloat(humidity) : null,
+                        horaInicio: horaInicio || null,
+                        horaFin: horaFin || null,
+                        lluvia: lluvia
+                    };
+
+                    // Enviar los datos a través de AJAX
+                    $.ajax({
+                        url: "http://192.168.50.72:5000/base", // Cambia la URL por la adecuada
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(dataToSend),
+                        success: function (response) {
+                            console.log("Respuesta del servidor:", response);
+                            alert("Datos enviados correctamente.");
+                            window.location.href = 'condicional.html';
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error al enviar datos:", xhr.responseText);
+                            alert("Error al enviar datos.");
+                        }
+                    });
                 }
             });
         });
