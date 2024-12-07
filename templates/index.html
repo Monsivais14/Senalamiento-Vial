@@ -13,18 +13,15 @@
     <style>
         .custom-btn {
             font-size: 20px;
-            padding: auto;
             width: 250px;
             height: 60px;
         }
 
-        /* Tamaño del icono para pantallas grandes */
         .logo-lg {
             width: 80px;
             height: 80px;
         }
 
-        /* Tamaño del icono para pantallas pequeñas */
         @media (max-width: 992px) {
             .logo-lg {
                 width: 40px;
@@ -32,19 +29,14 @@
             }
         }
 
-        /* Tamaño del título en pantallas grandes */
         .title-lg {
             font-size: 1.5rem;
-            /* Tamaño grande */
         }
 
-        /* Tamaño del título en pantallas pequeñas */
         @media (max-width: 576px) {
             .title-lg {
                 font-size: .98rem;
-                /* Tamaño pequeño */
             }
-
         }
     </style>
 </head>
@@ -98,16 +90,9 @@
 
     <div class="container">
         <div class="row mt-4 ms-5">
-            <!-- Botón de envío de datos -->
-            <button type="button" class="btn btn-primary custom-btn">Cargar programación</button>
+            <button type="button" id="send-btn" class="btn btn-primary custom-btn">Cargar programación</button>
         </div>
     </div>
-
-    <br>
-    <br>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
 
     <script>
         // Seleccionamos el botón
@@ -120,22 +105,55 @@
         });
 
         const senalamientos = [
-            `Lorem Ipsum es simplemente el texto de relleno 1 de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.`,
-            `Lorem Ipsum es simplemente el texto de relleno 2 de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.`,
-            `Lorem Ipsum es simplemente el texto de relleno 3 de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.`,
-            `Lorem Ipsum es simplemente el texto de relleno 4 de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.`,
-        ]
+            "Descripción señalamiento 1",
+            "Descripción señalamiento 2",
+            "Descripción señalamiento 3",
+            "Descripción señalamiento 4",
+        ];
 
-        $("#cboSenalamientos")
-            .change(function (event) {
-                const val = $(this).val()
-                const text = $(this).find('option:selected').text()
+        $("#cboSenalamientos").change(function () {
+            const val = $(this).val();
+            const text = $(this).find('option:selected').text();
 
-                $(".col-img").html(`<img class="w-75" src="../static/${text}.png">`)
-                $(".col-desc").html(senalamientos[parseInt(val)])
-            })
-            .trigger("change")
+            $(".col-img").html(`<img class="w-75" src="../static/${text}.png">`);
+            $(".col-desc").html(senalamientos[parseInt(val)]);
+        }).trigger("change");
+
+        $("#cboSenalamientos").change(function () {
+            const val = $(this).val();
+            const text = $(this).find('option:selected').text();
+
+            $(".col-img").html(`<img class="w-75" src="../static/${text}.png">`);
+            $(".col-desc").html(senalamientos[parseInt(val)]);
+        }).trigger("change");
+
+        $(document).ready(function () {
+            $('#send-btn').click(function () {
+                const selectedValue = $("#cboSenalamientos").val();
+                const dataToSend = {
+                    type : "base",
+                    name: $("#cboSenalamientos option:selected").text(),
+                };
+                
+                $.ajax({
+                    url: "http://192.168.50.72:5000/base", 
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(dataToSend),
+                    success: function (response) {
+                        console.log("Respuesta del servidor:", response);
+                        alert("Datos enviados correctamente.");
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error al enviar datos:", xhr.responseText);
+                        alert("Error al enviar datos.");
+                    }
+                });
+            });
+        });
+
     </script>
+     <!-- Cambiar URL al cambiar de RED (preferiblemente que sea estatica la IP)-->
 </body>
 
 </html>
