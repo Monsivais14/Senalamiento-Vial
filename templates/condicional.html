@@ -1,248 +1,225 @@
-    <!DOCTYPE html>
-    <html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Señalamiento Vial Programable</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-        <link rel="icon" href="/icon.png" type="image/png">
-        <style>
-            .custom-btn {
-                font-size: 20px;
-                padding: auto;
-                width: 250px;
-                height: 60px;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Señalamiento Vial Programable</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <style>
+        .custom-btn {
+            font-size: 20px;
+            padding: auto;
+            width: 250px;
+            height: 60px;
+        }
 
-            /* Tamaño del icono para pantallas grandes */
+        /* Tamaño del icono para pantallas grandes */
+        .logo-lg {
+            width: 80px;
+            height: 80px;
+        }
+
+        /* Tamaño del icono para pantallas pequeñas */
+        @media (max-width: 992px) {
             .logo-lg {
-                width: 80px;
-                height: 80px;
+                width: 40px;
+                height: 40px;
             }
+        }
 
-            /* Tamaño del icono para pantallas pequeñas */
-            @media (max-width: 992px) {
-                .logo-lg {
-                    width: 40px;
-                    height: 40px;
-                }
-            }
+        /* Tamaño del título en pantallas grandes */
+        .title-lg {
+            font-size: 1.5rem;
+            /* Tamaño grande */
+        }
 
-            /* Tamaño del título en pantallas grandes */
+        /* Tamaño del título en pantallas pequeñas */
+        @media (max-width: 576px) {
             .title-lg {
-                font-size: 1.5rem;
-                /* Tamaño grande */
+                font-size: .98rem;
+                /* Tamaño pequeño */
             }
 
-            /* Tamaño del título en pantallas pequeñas */
-            @media (max-width: 576px) {
-                .title-lg {
-                    font-size: .98rem;
-                    /* Tamaño pequeño */
-                }
+        }
 
-            }
+        /* Estilo personalizado para los inputs de temperatura y humedad */
+        .custom-input {
+            width: 250px;
+        }
 
-            /* Estilo personalizado para los inputs de temperatura y humedad */
-            .custom-input {
-                width: 250px;
-            }
+        /* Estilo para los inputs de hora */
+        .hour-input {
+            width: 120px;
+        }
+    </style>
+</head>
 
-            /* Estilo para los inputs de hora */
-            .hour-input {
-                width: 120px;
-            }
-        </style>
-    </head>
-
-    <body>
-        <!-- Barra de Navegacion  -->
-        <nav class="navbar navbar-expand-lg" style="background-color: #D3D3D3;">
-            <div class="container-fluid">
-                <!-- Logo -->
-                <a class="navbar-brand">
-                    <img src="/icon.png" alt="" class="logo-lg d-inline-block align-text-top">
-                </a>
-                <!-- Título -->
-                <span class="navbar-brand title-lg">Señalamiento Vial Programable</span>
-                <!-- Botón Hamburguesa -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- Menú desplegable -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item nav-lg ms-4">
-                            <!-- Botón que cambiará a condicional.html -->
-                            <button class="btn btn-link nav-link" id="btnCondicional">Cambiar tipo</button>
-                        </li>
-                    </ul>
-                </div>
+<body>
+    <!-- Barra de Navegacion  -->
+    <nav class="navbar navbar-expand-lg" style="background-color: #D3D3D3;">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand">
+                <img src="/icon.png" alt="" class="logo-lg d-inline-block align-text-top">
+            </a>
+            <!-- Título -->
+            <span class="navbar-brand title-lg">Señalamiento Vial Programable</span>
+            <!-- Botón Hamburguesa -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Menú desplegable -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item nav-lg ms-4">
+                        <!-- Botón que cambiará a condicional.html -->
+                        <button class="btn btn-link nav-link" id="btnCondicional">Cambiar tipo</button>
+                    </li>
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <div class="container">
-            <div class="row">
-                <div class="row ms-2 mt-5">
-                    <h2>Señalamiento Condicional</h2>
-                </div>
-                <!-- Checkbox de Temperatura -->
-                <div class="form-check form-switch col-sm-12 col-md-12 col-lg-12 ms-3 mt-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckTemperatura">
-                    <label class="form-check-label" for="flexSwitchCheckTemperatura">Temperatura</label>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="row ms-2 mt-5">
+                <h2>Señalamiento Condicional</h2>
+            </div>
+            <!-- Checkbox de Temperatura -->
+            <div class="form-check form-switch col-sm-12 col-md-12 col-lg-12 ms-3 mt-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckTemperatura">
+                <label class="form-check-label" for="flexSwitchCheckTemperatura">Temperatura</label>
+            </div>
 
-                <!-- Input de temperatura que se mostrará solo si se selecciona el checkbox -->
-                <div class="col-sm-12 col-md-12 col-lg-12" ms-3 id="temperatureInput" style="display: none;">
-                    <label for="temperature">Ingrese temperatura:</label>
-                    <input type="number" id="temperature" class="form-control form-control-sm custom-input"
-                        placeholder="Ingrese un número">
-                </div>
+            <!-- Input de temperatura que se mostrará solo si se selecciona el checkbox -->
+            <div class="col-sm-12 col-md-12 col-lg-12" ms-3 id="temperatureInput" style="display: none;">
+                <label for="temperature">Ingrese temperatura:</label>
+                <input type="number" id="temperature" class="form-control form-control-sm custom-input"
+                    placeholder="Ingrese un número">
+            </div>
 
-                <!-- Checkbox de Humedad -->
-                <div class="form-check form-switch col-sm-12 col-md-12 col-lg-12 ms-3 mt-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckHumedad">
-                    <label class="form-check-label" for="flexSwitchCheckHumedad">Humedad</label>
-                </div>
+            <!-- Checkbox de Humedad -->
+            <div class="form-check form-switch col-sm-12 col-md-12 col-lg-12 ms-3 mt-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckHumedad">
+                <label class="form-check-label" for="flexSwitchCheckHumedad">Humedad</label>
+            </div>
 
-                <!-- Input de humedad que se mostrará solo si se selecciona el checkbox -->
-                <div class="col-sm-12 col-md-12 col-lg-12" id="humidityInput" style="display: none;">
-                    <label for="humidity">Ingrese humedad:</label>
-                    <input type="number" id="humidity" class="form-control form-control-sm custom-input"
-                        placeholder="Ingrese un número">
-                </div>
+            <!-- Input de humedad que se mostrará solo si se selecciona el checkbox -->
+            <div class="col-sm-12 col-md-12 col-lg-12" id="humidityInput" style="display: none;">
+                <label for="humidity">Ingrese humedad:</label>
+                <input type="number" id="humidity" class="form-control form-control-sm custom-input"
+                    placeholder="Ingrese un número">
+            </div>
 
-                <!-- Checkbox de Hora -->
-                <div class="form-check form-switch col-sm-12 col-md-12 col-lg-12 ms-3 mt-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckHora">
-                    <label class="form-check-label" for="flexSwitchCheckHora">Hora</label>
-                </div>
+            <!-- Checkbox de Hora -->
+            <div class="form-check form-switch col-sm-12 col-md-12 col-lg-12 ms-3 mt-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckHora">
+                <label class="form-check-label" for="flexSwitchCheckHora">Hora</label>
+            </div>
 
-                <!-- Inputs para seleccionar hora de inicio y fin que se mostrarán solo si se selecciona el checkbox de hora -->
-                <div class="col-sm-12 col-md-12 col-lg-12" id="horaInput" style="display: none;">
-                    <label for="horaInicio">Hora inicio:</label>
-                    <input type="time" id="horaInicio" class="form-control form-control-sm hour-input">
-                    <label for="horaFin">Hora fin:</label>
-                    <input type="time" id="horaFin" class="form-control form-control-sm hour-input">
-                </div>
+            <!-- Inputs para seleccionar hora de inicio y fin que se mostrarán solo si se selecciona el checkbox de hora -->
+            <div class="col-sm-12 col-md-12 col-lg-12" id="horaInput" style="display: none;">
+                <label for="horaInicio">Hora inicio:</label>
+                <input type="time" id="horaInicio" class="form-control form-control-sm hour-input">
+                <label for="horaFin">Hora fin:</label>
+                <input type="time" id="horaFin" class="form-control form-control-sm hour-input">
+            </div>
 
-                <!-- Checkbox de Lluvia (ahora debe ser seleccionado al menos uno) -->
-                <div class="form-check form-switch col-sm-12 col-md-12 col-lg-12 ms-3 mt-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckLluvia">
-                    <label class="form-check-label" for="flexSwitchCheckLluvia">Lluvia</label>
-                </div>
+            <!-- Checkbox de Lluvia (ahora debe ser seleccionado al menos uno) -->
+            <div class="form-check form-switch col-sm-12 col-md-12 col-lg-12 ms-3 mt-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckLluvia">
+                <label class="form-check-label" for="flexSwitchCheckLluvia">Lluvia</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        <div class="row ms-2 mt-2 me-2">
+            <div class="col-xl-4 col-md-6 col-sm">
+                <select id="cboSenalamientostype" class="form-select" aria-label="Default select example">
+                    <option value="0" selected>Señalamiento Preventivo</option>
+                    <option value="1">Señalamiento Restrictivo</option>
+                    <option value="2">Señales Turisticas</option>
+                    <option value="3">Señalamiento de Protección de Obra</option>
+                </select>
             </div>
         </div>
 
-        <div class="container mt-3">
-            <div class="row ms-2 me-2 mt-2">
-                <div class="col-xl-4 col-md-6 col-sm">
-                    <select id="cboSenalamientos" class="form-select" aria-label="Default select example">
-                        <option value="0" selected>sp-28</option>
-                        <option value="1">sp-32</option>
-                        <option value="2">sp-33</option>
-                        <option value="3">sr-6</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row align-items-center mt-4">
-                <div class="col-sm-12 col-md col-lg-4 col-img text-center"></div>
-                <div class="col-sm-12 col-md col-lg-8 col-desc mt-2"></div>
+        <div class="row ms-2 mt-2 me-2">
+            <div class="col-xl-4 col-md-6 col-sm">
+                <select id="cboSenalamientos" class="form-select" aria-label="Default select example">
+                    <!-- Opciones de señalamiento que se actualizan dinámicamente -->
+                </select>
             </div>
         </div>
 
-        <div class="container">
-            <div class="row mt-4 ms-5">
-                <button type="button" id="send-btn" class="btn btn-primary custom-btn">Cargar programación</button>
-            </div>
+        <div class="row align-items-center mt-4 p-3">
+            <div class="col-sm-12 col-md col-lg-4 col-img text-center"></div>
+            <div class="col-sm-12 col-md col-lg-8 col-desc mt-2"></div>
         </div>
+    </div>
+    </div>
 
-        <br>
-        <br>
+    <div class="container">
+        <div class="row mt-4 ms-5">
+            <button type="button" id="send-btn" class="btn btn-primary custom-btn">Cargar programación</button>
+        </div>
+    </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            crossorigin="anonymous"></script>
+    <br>
+    <br>
 
-        <script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 
-            // Seleccionamos el botón
-            const btnCondicional = document.getElementById('btnCondicional');
+    <script>
+    $(document).ready(function () {
+        // Mostrar u ocultar el input de temperatura cuando se seleccione el checkbox
+        $('#flexSwitchCheckTemperatura').change(function () {
+            if ($(this).is(':checked')) {
+                $('#temperatureInput').show();  // Mostrar el input de temperatura
+            } else {
+                $('#temperatureInput').hide();  // Ocultar el input de temperatura
+            }
+        });
 
-            // Añadimos el evento para redirigir
-            btnCondicional.addEventListener('click', function () {
-                // Redirige a "condicional.html" cuando se hace clic en el botón
-                window.location.href = 'base.html';
-            });
+        // Mostrar u ocultar el input de humedad cuando se seleccione el checkbox
+        $('#flexSwitchCheckHumedad').change(function () {
+            if ($(this).is(':checked')) {
+                $('#humidityInput').show();  // Mostrar el input de humedad
+            } else {
+                $('#humidityInput').hide();  // Ocultar el input de humedad
+            }
+        });
 
-            const senalamientos = [
-                "Descripción señalamiento 1",
-                "Descripción señalamiento 2",
-                "Descripción señalamiento 3",
-                "Descripción señalamiento 4",
-            ];
+        // Mostrar u ocultar los inputs de hora cuando se seleccione el checkbox
+        $('#flexSwitchCheckHora').change(function () {
+            if ($(this).is(':checked')) {
+                $('#horaInput').show();  // Mostrar los inputs de hora
+            } else {
+                $('#horaInput').hide();  // Ocultar los inputs de hora
+            }
+        });
 
-            $("#cboSenalamientos").change(function () {
-                const val = $(this).val();
-                const text = $(this).find('option:selected').text();
+        // Mostrar u ocultar el input de lluvia, pero este no depende de los demás
+        $('#flexSwitchCheckLluvia').change(function () {
+            // Este checkbox no tiene ningún efecto visual en otros elementos
+        });
 
-                $(".col-img").html(`<img class="w-75" src="../static/${text}.png">`);
-                $(".col-desc").html(senalamientos[parseInt(val)]);
-            }).trigger("change");
+        // Inicializar la visibilidad de los inputs dependiendo de los checkboxes seleccionados
+        $('#flexSwitchCheckTemperatura').change();  // Actualiza el estado de visibilidad
+        $('#flexSwitchCheckHumedad').change();      // Actualiza el estado de visibilidad
+        $('#flexSwitchCheckHora').change();         // Actualiza el estado de visibilidad
+    });
 
-            $("#cboSenalamientos").change(function () {
-                const val = $(this).val();
-                const text = $(this).find('option:selected').text();
-
-                $(".col-img").html(`<img class="w-75" src="../static/${text}.png">`);
-                $(".col-desc").html(senalamientos[parseInt(val)]);
-            }).trigger("change");
-
-            // Función que muestra u oculta el campo de temperatura dependiendo del estado del checkbox
-            const checkTemperatura = document.getElementById('flexSwitchCheckTemperatura');
-            const temperatureInput = document.getElementById('temperatureInput');
-
-            // Evento que controla la visibilidad del input de temperatura
-            checkTemperatura.addEventListener('change', function () {
-                if (this.checked) {
-                    temperatureInput.style.display = 'block'; // Muestra el input
-                } else {
-                    temperatureInput.style.display = 'none'; // Oculta el input
-                }
-            });
-
-            // Función que muestra u oculta el campo de humedad dependiendo del estado del checkbox
-            const checkHumedad = document.getElementById('flexSwitchCheckHumedad');
-            const humidityInput = document.getElementById('humidityInput');
-
-            // Evento que controla la visibilidad del input de humedad
-            checkHumedad.addEventListener('change', function () {
-                if (this.checked) {
-                    humidityInput.style.display = 'block'; // Muestra el input
-                } else {
-                    humidityInput.style.display = 'none'; // Oculta el input
-                }
-            });
-
-            // Función que muestra u oculta los campos de hora dependiendo del estado del checkbox
-            const checkHora = document.getElementById('flexSwitchCheckHora');
-            const horaInput = document.getElementById('horaInput');
-
-            // Evento que controla la visibilidad de los inputs de hora
-            checkHora.addEventListener('change', function () {
-                if (this.checked) {
-                    horaInput.style.display = 'block'; // Muestra los inputs de hora
-                } else {
-                    horaInput.style.display = 'none'; // Oculta los inputs de hora
-                }
-            });
-
-            // Validación antes de enviar
-            $(document).ready(function () {
+     // Validación antes de enviar
+     $(document).ready(function () {
                 $('#send-btn').click(function () {
                     // Verificación de que al menos un checkbox esté seleccionado
                     let formValid = false;
@@ -303,7 +280,134 @@
                     }
                 });
             });
-        </script>
-    </body>
 
-    </html>
+        $(document).ready(function () {
+            // Añadimos el evento para redirigir
+            $('#btnCondicional').click(function () {
+                // Redirige a "condicional.html" cuando se hace clic en el botón
+                window.location.href = 'base.html';  // Cambié la redirección a "condicional.html" como mencionabas
+            });
+
+            // Datos de las opciones por tipo de señalamiento
+            const senalamientosData = {
+                "0": ["SP-6", "SP-7", "SP-8", "SP-9", "SP-10", "SP-11", "SP-12", "SP-13", "SP-14", "SP-16", "SP-17", "SP-18", "SP-19", "SP-20", "SP-21", "SP-22", "SP-23", "SP-24", "SP-25", "SP-26", "SP-27", "SP-28", "SP-29", "SP-31", "SP-32", "SP-33", "SP-35", "SP-36", "SP-37", "SP-38", "SP-39", "SP-40", "SP-41"],
+                "1": ["SR-6", "SR-7", "SR-8", "SR-9(30)", "SR-9(40)", "SR-9(50)", "SR-9(60)", "SR-9(70)", "SR-9(80)", "SR-9(90)", "SR-9(100)", "SR-9(110)", "SR-10", "SR-11", "SR-12", "SR-13", "SR-14", "SR-15", "SR-16", "SR-17", "SR-18", "SR-19", "SR-20", "SR-21", "SR-22", "SR-23", "SR-24", "SR-25", "SR-26", "SR-27", "SR-28", "SR-29", "SR-31", "SR-32", "SR-33", "SR-34", "SR-36"],
+                "2": ["SIT-6", "SIT-7", "SIT-8", "SIT-9", "SIT-10", "SIT-41"],
+                "3": ["SPP-1", "SPP-2", "SPP-3"]
+            };
+
+            const senalamientosDescriptions = {
+                "SP-6": "Se utiliza para indicar las curvas a la derecha o a la izquierda, cuando el producto del grado de curvatura por la deflexión sea menor de 90. No se deben señalar aquellas curvas que tengan una deflexión menor de 15° o un grado de curvatura menor de 2°",
+                "SP-7": "Se emplea para indicar curvas a la derecha o a la izquierda, cuando el producto del grado de curvatura por la deflexión sea igual o superior a 90.",
+                "SP-8": "La Señal SP-8 Curva Inversa se utiliza para indicar la presencia de dos curvas consecutivas de dirección contraria, separadas por una tangente de longitud menor al doble de la distancia y cuando el producto del grado de curvatura por la deflexión de cada una de ellas sea menor de 90.",
+                "SP-9": "Se coloca para indicar la presencia de dos curvas consecutivas de dirección contraria, separadas por una tangente de longitud menor al doble de la distancia y cuando el producto del grado de curvatura por la deflexión sea en cualquiera de las curvas igual o superior a 90.",
+                "SP-10": "Se emplea para indicar tres o más curvas inversas consecutivas.",
+                "SP-11": "Se utiliza para indicar la intersección a nivel de dos vialidades.",
+                "SP-12": "Se utiliza para indicar una intersección a nivel en T de dos vialidades, cuando la vialidad que entronca sea normal o  tenga un ángulo de esviaje de hasta 30° medido a partir de la perpendicular de la principal a la secundaria.",
+                "SP-13": "Se utiliza para indicar una intersección a nivel de tres ramas, con isleta triangular central. Para considerarse como intersección en delta, los lados deben tener unalongitud menor que dos veces la distancia indicada para la ubicación de las señales preventivas, pero nunca mayores a 130 m.",
+                "SP-14": "Se utiliza para indicar una intersección a nivel en la que una vialidad entronca con otra en ángulo oblicuo superior a 30°, medido a partir de la perpendicular de la principal a la secundaria.",
+                "SP-16": "Se emplea para indicar una intersección a nivel de dos o más vialidades, la cual tiene una isleta central de forma redondeada para circulación continua.",
+                "SP-17": "Indica la existencia de una confluencia, derecha o  izquierda, por donde se incorpora tránsito vehicular en el mismo sentido.",
+                "SP-18": "Se utiliza para indicar el cambio de un tramo con circulación en un sólo sentido a otro tramo con circulación en ambos sentidos.",
+                "SP-19": "Se utiliza para indicar la proximidad de una salida en las vialidades de accesos controlados.",
+                "SP-20": "Se usa para indicar una reducción simétrica en la anchura de la vialidad, ya sea disminuyendo el número de carriles o las dimensiones de la sección transversal.",
+                "SP-21": "Se aplica para indicar una reducción asimétrica de la anchura de la vialidad, ya sea disminuyendo el número de carriles o las dimensiones de la sección transversal.",
+                "SP-22": "Se utiliza para indicar la existencia de un puente cuyo sistema de piso es móvil y puede estar momentáneamente desplazado, horizontal o verticalmente, para permitir el paso de embarcaciones.",
+                "SP-23": "El señalamiento SP-23 Puente Angosto, Se utiliza para indicar la existencia de un puente cuya anchura entre guarniciones sea menor a la de la corona o arroyo vial.",
+                "SP-24": "Se coloca para advertir la presencia de pasos estrechos o estructuras angostas que no permitan la circulación simultánea de dos vehículos. La anchura libre en metros con aproximación al decímetro inferior se mostrará en un tablero adicional.",
+                "SP-25": "Se utiliza para indicarla existencia de cualquier estructura o elemento que limite el espacio libre vertical a menos de 5.0 m.",
+                "SP-26": "Se usa para indicar la presencia de un vado en la vialidad; esta señal debe complementarse con reglas y tubos guía para vados.",
+                "SP-27": "Se emplea para indicar que termina la superficie pavimentada de la vialidad.",
+                "SP-28": "Se coloca para indicar que existen tramos con superficie resbalosa y no por condiciones ambientales.",
+                "SP-29": "Se usa para indicar la presencia de un tramo de la vialidad con una pendiente descendente continua en un tramo considerable, en la cual se recomienda reducir la velocidad, de preferencia con motor.",
+                "SP-31": "Se emplea para indicar la proximidad de una señal SR-6 ALTO, cuando ésta no sea visible a una distancia suficiente para que el conductor pueda parar en el lugar mismo de la restricción. Se coloca un tablero adicional que indique la distancia a la que se ubica la señal SR-6 ALTO, misma que no será menor a la distancia de visibilidad de parada, por ejemplo a 80 m.",
+                "SP-32": "Se utiliza para indicar los sitios o zonas de la vialidad por donde cruzan o transitan peatones.",
+                "SP-33": "Se utiliza para indicar los sitios o zonas de la vialidad por donde cruzan o transitan escolares.",
+                "SP-35": "Se utiliza para advertir la proximidad de un cruce a nivel con vía férrea.",
+                "SP-36": "Se utiliza para indicar los sitios o zonas de la vialidad por donde cruza o transitan vehículos Agrícolas",
+                "SP-37": "Se usa antes de las intersecciones aisladas que estén controladas por semáforos, o cuando se entra a una zona donde no se espera encontrarlos.",
+                "SP-38": "Se coloca para indicar el principio o el final de una vialidad dividida por una faja separadora central.",
+                "SP-39": "Se utiliza para indicar los sitios o zonas de la vialidad por donde cruzan o transitan bicicletas.",
+                "SP-40": "Se emplea para indicar la proximidad de un tramo de vialidad en el que existe grava suelta sobre la superficie de rodadura.",
+                "SP-41": "Se usa para indicar la proximidad de un reductor de velocidad, que es un dispositivo instalado sobre la superficie de rodadura para controlar la velocidad de los vehículos.",
+                "SR-6": "El uso de la Señal Restrictiva SR-6 Alto se determina a partir de las condiciones locales del tránsito. En general, esta señal se coloca en los siguientes casos: \n1. En los accesos de las intersecciones a nivel para restringir el paso a los vehículos.\n2. Antes del cruce de una carretera o vialidad urbana con una vía férrea, paso peatonal o ciclovía.\nEsta señal se coloca en las carreteras o vialidades urbanas de menor volumen de tránsito, en el lugar preciso en donde deben detenerse los vehículos, para lo cual se debe complementar con la marca M-6 RAYA DE ALTO.",
+                "SR-7": "Indica que el conductor tiene que detenerse o aminorar la velocidad de su vehículo, cuando sea necesario ceder el paso al tránsito al que se incorpora o cruza. El uso de esta señal se debe determinar siempre mediante un estudio de las condiciones locales de tránsito. La señal de CEDA EL PASO no se considera como un sustituto de la señal SR-6 ALTO. ",
+                "SR-8": "Se utiliza para indicar a los conductores que deben detenerse obligatoriamente en determinado lugar para una revisión por parte de las autoridades correspondientes. La señal llevará un tablero adicional con la leyenda respectiva, tal como: ADUANA, BÁSCULA, FISCAL, FORESTAL, POLICÍA, entre otros.",
+                "SR-9(30)": "La velocidad máxima en cada tramo de carretera o vialidad urbana se establece en función de un estudio de ingeniería de tránsito o la que se determine por reglamentación, la cual puede establecerse para un determinado tipo de vehículos mediante un tablero adicional en el que así se indique.",
+                "SR-9(40)": "La velocidad máxima en cada tramo de carretera o vialidad urbana se establece en función de un estudio de ingeniería de tránsito o la que se determine por reglamentación, la cual puede establecerse para un determinado tipo de vehículos mediante un tablero adicional en el que así se indique.",
+                "SR-9(50)": "La velocidad máxima en cada tramo de carretera o vialidad urbana se establece en función de un estudio de ingeniería de tránsito o la que se determine por reglamentación, la cual puede establecerse para un determinado tipo de vehículos mediante un tablero adicional en el que así se indique.",
+                "SR-9(60)": "La velocidad máxima en cada tramo de carretera o vialidad urbana se establece en función de un estudio de ingeniería de tránsito o la que se determine por reglamentación, la cual puede establecerse para un determinado tipo de vehículos mediante un tablero adicional en el que así se indique.",
+                "SR-9(70)": "La velocidad máxima en cada tramo de carretera o vialidad urbana se establece en función de un estudio de ingeniería de tránsito o la que se determine por reglamentación, la cual puede establecerse para un determinado tipo de vehículos mediante un tablero adicional en el que así se indique.",
+                "SR-9(80)": "La velocidad máxima en cada tramo de carretera o vialidad urbana se establece en función de un estudio de ingeniería de tránsito o la que se determine por reglamentación, la cual puede establecerse para un determinado tipo de vehículos mediante un tablero adicional en el que así se indique.",
+                "SR-9(90)": "La velocidad máxima en cada tramo de carretera o vialidad urbana se establece en función de un estudio de ingeniería de tránsito o la que se determine por reglamentación, la cual puede establecerse para un determinado tipo de vehículos mediante un tablero adicional en el que así se indique.",
+                "SR-9(100)": "La velocidad máxima en cada tramo de carretera o vialidad urbana se establece en función de un estudio de ingeniería de tránsito o la que se determine por reglamentación, la cual puede establecerse para un determinado tipo de vehículos mediante un tablero adicional en el que así se indique.",
+                "SR-9(110)": "La velocidad máxima en cada tramo de carretera o vialidad urbana se establece en función de un estudio de ingeniería de tránsito o la que se determine por reglamentación, la cual puede establecerse para un determinado tipo de vehículos mediante un tablero adicional en el que así se indique.",
+                "SR-10": "Se emplea en las intersecciones controladas por semáforos en las cuales está permitida la vuelta derecha en forma continua aunque para el tránsito que siga de frente se indique ALTO. Esta señal solamente se utilizará cuando pueda garantizarse que el paso de peatones tenga prioridad y éste sea respetado por los conductores de vehículos.",
+                "SR-11": "Se usa en aquellas intersecciones donde se indique la obligación de circular en el sentido mostrado, con el fin de evitar la invasión de un carril con circulación contraria.",
+                "SR-12": "Se usa en intersecciones para indicar que uno o más carriles se utilizan exclusivamente para vuelta izquierda y no deben ser ocupados por vehículos que sigan de frente. Esta señal se complementa con marcas en el pavimento, como flechas y letras.",
+                "SR-13": "Se emplea para indicar a los conductores de camiones que tienen que transitar por el carril de su derecha, con el objeto de dejar libre el carril o carriles de la izquierda para el tránsito de vehículos ligeros. Se usa exclusivamente en carreteras o vialidades urbanas con dos o más carriles por sentido de circulación, incluyendo los carriles de ascenso.",
+                "SR-14": "Se coloca en aquellas vías de un solo sentido, cuando cambien a un tramo de dos carriles en el que se permita la doble circulación. Se ubica al inicio del tramo aludido.",
+                "SR-15": "Se emplea para indicar que la altura libre de un paso inferior u otra estructura es menor de 5.00 m y se coloca en dicha estructura. La dimensión se indica en metros con aproximación al decímetro inferior.",
+                "SR-16": "Se utiliza para indicar que las dimensiones de alguna estructura en la vialidad no permitirán el paso simultáneo de dos vehículos. La anchura se indica en metros con aproximación al decímetro inferior. Se usará cuando el ancho de la estructura sea igual o menor que 5.50 m.",
+                "SR-17": "Se utiliza en puentes u otros sitios de la carretera o vialidad urbana donde se restrinja la circulación de vehículos que excedan el peso indicado, ya sea por la capacidad del puente o del pavimento.",
+                "SR-18": "Se emplea para indicar los tramos en los que no se permite realizar maniobras de rebase.",
+                "SR-19": "Se utiliza en aquellos lugares donde esté restringido el ascenso y descenso de pasajeros para no interferir con otro tipo de circulación ya sea vehicular o peatonal.",
+                "SR-20": "Se coloca en aquellos lugares donde no se permita el estacionamiento ni la detención momentánea de vehículos sobre la superficie de rodadura. Se usa en las vías rápidas con altos volúmenes de tránsito o en túneles y puentes cuando la detención de un vehículo pueda ocasionar accidentes o provocar congestionamientos, así como en entradas y salidas de emergencia donde no puede existir en ningún momento algún vehículo que obstruya su funcionamiento.",
+                "SR-21": "Se emplea en aquellos sitios donde sea necesario obtener una mayor utilización del espacio para estacionamiento disponible.",
+                "SR-22": "Se utiliza en aquellos lugares donde no se permita el estacionamiento y aplica para el tramo carretero o de vialidad urbana donde se ubica la señal. En áreas urbanas aplicará únicamente para el tramo comprendido entre dos esquinas.",
+                "SR-23": "Se utiliza en aquellos sitios donde se prohíba la vuelta a la derecha, por tratarse de una circulación de sentido contrario o, en casos específicos, para no interferir con otros movimientos importantes, inclusive el de peatones.",
+                "SR-24": "Se emplea en aquellos sitios donde se prohíba la vuelta a la izquierda por tratarse de una circulación de sentido contrario o, en casos específicos, para no interferir con otros movimientos importantes, inclusive el de peatones.",
+                "SR-25": "Se aplica en los sitios donde se prohíba la vuelta de retorno por no disponer de las condiciones de seguridad o causar inconvenientes al tránsito de vehículos.",
+                "SR-26": "Se emplea en aquellos sitios donde se prohíba la circulación de frente, al inicio de una carretera o vialidad urbana, principalmente por el cambio en el sentido de circulación.",
+                "SR-27": "Se usa para indicar que está prohibido el tránsito de bicicletas, vehículos de carga y motocicletas en determinado tramo de la carretera o vialidad urbana.",
+                "SR-28": "Se usa para indicar que se prohíbe la circulación de vehículos de tracción animal sobre la carretera o vialidad urbana.",
+                "SR-29": "Se emplea para indicar que está prohibida la circulación de vehículos agrícolas sobre la carretera o vialidad urbana.",
+                "SR-31": "Se usa en aquellos sitios de la carretera o vialidad urbana en los que se prohíbe la circulación o cruce de peatones.",
+                "SR-32": "Se emplea para indicar que en determinados tramos de carretera o vialidad urbana, está prohibido el tránsito de vehículos de carga.",
+                "SR-33": "Se utiliza para indicar a los conductores la prohibición de emplear el sonido de la bocina o claxon excepto para prevenir un accidente.",
+                "SR-34": "Se instala para indicar la obligación del uso del cinturón de seguridad, así como de los asientos para niños, de todos los ocupantes de los vehículos en tránsito.",
+                "SR-36": "Se usa para indicar la prohibición de circulación de vehículos matriculados en otro país que no cuenten con el permiso de internación al territorio nacional expedido por la autoridad correspondiente.",
+                "SPP-1": "Se utiliza para indicar la proximidad de un tramo en el que se estén realizando obras de construcción, conservación o reparación.",
+                "SPP-2": "Se utiliza para advertir a los conductores sobre la proximidad de una reducción en el ancho de la carpeta por la ocupación temporal de material para construcción, conservación o reparación.",
+                "SPP-3": "El banderero es la señalización que indica la presencia de quien ayuda en el control del tráfico mientras se realizan trabajos en un área transitada. Recuerde que el desconocimiento de la norma no lo exime de su cumplimiento por lo tanto debe tener en cuenta que cuando la vea, su velocidad no debe superar los 50Km/h.",
+                "SPP-4": "Se utiliza para indicar el cambio de un tramo con circulación en un sólo sentido a otro tramo con circulación en ambos sentidos.",
+                "SPP-5": "Se aplica para indicar una reducción asimétrica de la anchura de la vialidad, ya sea disminuyendo el número de carriles o las dimensiones de la sección transversal. La orientación del pictograma indica si el estrechamiento ocurre a la derecha o a la izquierda.",
+                "SPP-6": "Se emplea para indicar la proximidad de un tramo de vialidad en el que existe grava suelta sobre la superficie de rodadura.",
+                "SIT-6": "Se usa para informar la presencia de un lago o laguna.",
+                "SIT-7": "Se usa para informar la presencia de monumentos coloniales.",
+                "SIT-8": "Se usa para informar la presencia de un parque nacional.",
+                "SIT-9": "Se usa para informar la presencia de playas.",
+                "SIT-10": "Se usa para informar la presencia de una zona arqueológica.",
+                "SIT-41": "Se usa para indicar la presencia de un museo.",
+            };
+
+            // Actualiza las opciones del cboSenalamientos al cambiar el tipo de señalamiento
+            $("#cboSenalamientostype").change(function () {
+                const selectedType = $(this).val();
+                const options = senalamientosData[selectedType];
+                let optionsHtml = "";
+
+                options.forEach(function (option) {
+                    optionsHtml += `<option value="${option}">${option}</option>`;
+                });
+
+                $("#cboSenalamientos").html(optionsHtml);
+                $("#cboSenalamientos").trigger("change");  // Trigger to update the description and image
+            }).trigger("change");
+
+            // Actualiza la imagen y descripción al cambiar el señalamiento
+            $("#cboSenalamientos").change(function () {
+                const selectedOption = $(this).val();
+                const description = senalamientosDescriptions[selectedOption];
+
+                $(".col-img").html(`<img class="w-75" src="../static/${selectedOption}.webp">`);
+                $(".col-desc").html(description);
+            }).trigger("change");
+
+
+        });
+
+    </script>
+</body>
+
+</html>
