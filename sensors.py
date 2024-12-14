@@ -1,10 +1,11 @@
 import wiringpi
 from wiringpi import GPIO
 
+wiringpi.wiringPiSetup()
+
 def getval(pin):
 	tl=[]
 	tb=[]
-	wiringpi.wiringPiSetup()
 	wiringpi.pinMode(pin, GPIO.OUTPUT)
 	wiringpi.digitalWrite(pin, GPIO.HIGH)
 	wiringpi.delay(1)
@@ -36,6 +37,7 @@ def getval(pin):
 	
 	return tb
 
+# Metodo para obtener hum y temp
 def GetResult(pin):
 	for i in range(10):
 		SH=0;SL=0;TH=0;TL=0;C=0
@@ -60,3 +62,8 @@ def GetResult(pin):
 	flotante_1 = float(f"{SH}.{SL}")
 	flotante_2 = float(f"{TH}.{TL}")
 	return flotante_1,flotante_2
+
+# Método para obtener la lluvia 
+def getLluvia(pin): 
+	wiringpi.pinMode(pin, GPIO.INPUT) # Lee el valor del pin (HIGH o LOW) 
+	return wiringpi.digitalRead(pin) != GPIO.HIGH
