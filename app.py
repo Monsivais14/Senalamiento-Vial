@@ -17,9 +17,22 @@ dhtPin = 6  # Physical 12
 lluvPin = 9  # Physical 16
 led = 10    # Physical 18
 
+typeBase = None
+typeCondicional = None
+nameBase = None
+nameCondicional = None
+temperature = None
+humidity = None
+horaInicio = None
+horaFin = None
+lluvia = None
+
 @app.route('/base', methods=['POST'])
 def receive_json():
     try:
+        # Declarar las variables globales
+        global typeBase, nameBase, typeCondicional, nameCondicional, temperature, humidity, horaInicio, horaFin, lluvia
+
         # Obtener el JSON del cuerpo de la solicitud
         data = request.get_json()
         if not data:
@@ -27,6 +40,24 @@ def receive_json():
 
         # Debugging
         print("JSON recibido:", data)
+
+        for i in range(5):
+            sensors.parpadeo(led)
+
+        type = data['type']
+
+        # Clasifica y guarda los datos dependiendo del tipo de senalamiento
+        if(type=='base'):
+            typeBase = type
+            nameBase = data['name']
+        else:
+            typeCondicional = type
+            nameCondicional = data['name']
+            temperature = data['temperature']
+            humidity = data['humidity']
+            horaInicio = data['horaInicio']
+            horaFin = data['horaFin']
+            lluvia = data['lluvia']
 
         # Devolver el contenido del JSON recibido
         return jsonify({"message": "JSON recibido con éxito", "content": data}), 200
@@ -46,8 +77,11 @@ def sensor_loop():
             # Obtiene los valores de los sensores
             hum, temp = sensors.GetResult(dhtPin)
             lluv = sensors.getLluvia(lluvPin)
+            sensors.parpadeo(led)
 
+            print(f" ")
             print(f"Fecha: {fecha_actual}, Hora: {hora}, Sensor: Hum: {hum}, Temp: {temp}, Lluvia: {lluv}")
+            print(f"typeBase: {typeBase}, typeCondicional: {typeCondicional}, nameBase: {nameBase}, nameCondicional: {nameCondicional}, temperature: {temperature}, humidity: {humidity}, horaInicio: {horaInicio}, horaFin: {horaFin}, lluvia: {lluvia}")
             time.sleep(1)
 
         except Exception as e:

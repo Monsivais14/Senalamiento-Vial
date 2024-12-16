@@ -94,3 +94,11 @@ def GetResult(pin):
 def getLluvia(pin): 
     wiringpi.pinMode(pin, GPIO.INPUT)  # Lee el valor del pin (HIGH o LOW)
     return wiringpi.digitalRead(pin) != GPIO.HIGH
+
+
+def parpadeo(pin):
+    wiringpi.pinMode(pin, GPIO.OUTPUT)
+    wiringpi.digitalWrite(pin, GPIO.HIGH)
+    wiringpi.delay(1)
+    wiringpi.digitalWrite(pin, GPIO.LOW)
+    wiringpi.delay(1)
