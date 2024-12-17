@@ -8,6 +8,7 @@ from flask_cors import CORS
 import threading
 import tkinter as tk
 import socket
+from PIL import Image, ImageTk
 
 # Crear la aplicación Flask
 app = Flask(__name__)
@@ -33,6 +34,7 @@ class AppState:
         self.lluvia = None
         self.window = None
         self.label = None
+        self.image_label = None  # Añadir etiqueta para la imagen
 
 state = AppState()
 
@@ -49,17 +51,63 @@ def obtener_ip():
 
 # Función para actualizar la interfaz
 def actualizar_interfaz():
-    if state.window and state.label:
+    if state.window:
         ip = obtener_ip()
+
+        # Si no se ha recibido 'typeBase' y 'nameBase', mostrar texto
         if state.typeBase is None:
             texto = f"{ip}:5500/templates/base"
         else:
-            # Aqui es cuando cambia a tipo base, aqui debe mostrar la imagen del senalamiento base
-            texto = f"{ip}:5500/template/base\n\n"
+            texto = f"{ip}:5500/cambio/base\n\n"
             texto += f"Type Base: {state.typeBase}\n"
             texto += f"Name Base: {state.nameBase}\n"
+            # Mostrar la imagen correspondiente
+            imagen_path = f"static/{state.nameBase}.webp"
+            
+            try:
+                img = Image.open(imagen_path)
+
+                # Obtener las dimensiones de la ventana
+                window_width = state.window.winfo_width()
+                window_height = state.window.winfo_height()
+
+                # Mantener la proporción de la imagen
+                img_width, img_height = img.size
+                aspect_ratio = img_width / img_height
+
+                if window_width / window_height > aspect_ratio:
+                    # Si la relación de aspecto de la ventana es mayor que la de la imagen
+                    new_width = int(window_height * aspect_ratio)
+                    new_height = window_height
+                else:
+                    # Si la relación de aspecto de la ventana es menor que la de la imagen
+                    new_width = window_width
+                    new_height = int(window_width / aspect_ratio)
+
+                # Redimensionar la imagen manteniendo la proporción
+                img = img.resize((new_width, new_height), Image.ANTIALIAS)
+
+                img_tk = ImageTk.PhotoImage(img)
+
+                # Si no existe la etiqueta de la imagen, crearla
+                if not state.image_label:
+                    state.image_label = tk.Label(state.window, image=img_tk)
+                    state.image_label.image = img_tk  # Guardar referencia para que no se elimine
+                    state.image_label.pack(fill=tk.BOTH, expand=True)
+                else:
+                    # Actualizar la imagen de la etiqueta
+                    state.image_label.configure(image=img_tk)
+                    state.image_label.image = img_tk  # Actualizar la referencia de la imagen
+
+                # Eliminar la etiqueta de texto si ya está visible
+                if state.label:
+                    state.label.destroy()
+                    state.label = None
+
+            except FileNotFoundError:
+                texto += "\nImagen no encontrada."
+
             if state.typeCondicional:
-                # Aqui es cuando cambia a condicional
                 texto += f"\nType Condicional: {state.typeCondicional}\n"
                 texto += f"Name Condicional: {state.nameCondicional}\n"
                 texto += f"Temperature: {state.temperature}°C\n"
@@ -68,8 +116,11 @@ def actualizar_interfaz():
                 texto += f"Hora Fin: {state.horaFin}\n"
                 texto += f"Lluvia: {'Sí' if state.lluvia else 'No'}"
         
-        state.label.config(text=texto)
+        # Actualizar texto si no se muestra imagen
+        if not state.image_label:
+            state.label.config(text=texto)
         state.window.update()
+
 
 @app.route('/base', methods=['POST'])
 def receive_json():
