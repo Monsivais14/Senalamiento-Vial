@@ -56,11 +56,8 @@ def actualizar_interfaz():
 
         # Si no se ha recibido 'typeBase' y 'nameBase', mostrar texto
         if state.typeBase is None:
-            texto = f"{ip}:5500/templates/base"
-        else:
-            texto = f"{ip}:5500/cambio/base\n\n"
-            texto += f"Type Base: {state.typeBase}\n"
-            texto += f"Name Base: {state.nameBase}\n"
+            texto = f"{ip}:5500/templates/base.html"
+        if state.typeBase == "base":
             # Mostrar la imagen correspondiente
             imagen_path = f"static/{state.nameBase}.webp"
             
@@ -107,15 +104,6 @@ def actualizar_interfaz():
             except FileNotFoundError:
                 texto += "\nImagen no encontrada."
 
-            if state.typeCondicional:
-                texto += f"\nType Condicional: {state.typeCondicional}\n"
-                texto += f"Name Condicional: {state.nameCondicional}\n"
-                texto += f"Temperature: {state.temperature}°C\n"
-                texto += f"Humidity: {state.humidity}%\n"
-                texto += f"Hora Inicio: {state.horaInicio}\n"
-                texto += f"Hora Fin: {state.horaFin}\n"
-                texto += f"Lluvia: {'Sí' if state.lluvia else 'No'}"
-        
         # Actualizar texto si no se muestra imagen
         if not state.image_label:
             state.label.config(text=texto)
@@ -181,9 +169,52 @@ def sensor_loop():
             print(f"horaInicio: {state.horaInicio}, horaFin: {state.horaFin}")
             print(f"lluvia: {state.lluvia}")
 
+            # Funcion que realiza la comparacion para el cambio de senalamiento condicional
+            comparacionCondicional(hum, temp, lluv, hora)
+
             time.sleep(1)
         except Exception as e:
             print(f"Error en la lectura de sensores: {e}")
+
+def comparacionCondicional(hum, temp, lluv, hora):
+    # primero hay que programar un senalamiento base, de lo contrario no iniciara
+    if state.typeBase == "base":
+        if state.typeCondicional == "condicional":
+            # Aqui es donde se encuentra la comparacion de lecturas con programacion
+            # Hora {hora}
+            # Sensores {hum} {temp} {lluv} 
+            # programacion state.{var}
+
+            # Condicional de lluvia
+            # primero detecta si esta seleccionada la lluvia, despues realiza la comparacion
+            if state.lluvia:
+                if state.lluvia == lluv:
+                    # Aqui ira el boolean de cambio de tipo de senalamiento
+                    print("detecto lluvia")
+
+            # Condicional de Hora
+            # primero comprueba si este seleccionada la hora
+            if state.horaInicio != None:
+                # Verificar si la hora está dentro del rango en formato 24 horas
+                if state.horaInicio <= hora <= state.horaFin:
+                    # Aqui ira el boolean de cambio de tipo de senalamiento
+                    print("La hora está dentro del rango.")
+                else:
+                    print("La hora está fuera del rango.")
+
+            # Condicional de humedad
+            # primero comprueba si esta seleccionada humedad
+            if state.humidity != None:
+                if hum >= state.humidity:
+                    # Aqui ira el boolean de cambio de tipo de senalamiento
+                    print("Humedad activa")
+            
+            # Condicional de temperatura
+            # primero comprueba si esta seleccionada temperatura
+            if state.temperature != None:
+                if temp >= state.temperature:
+                    # Aqui ira el boolean de cambio de tipo de senalamiento
+                    print("Temperatura activa")
 
 def interfaz_grafica():
     # Configurar la ventana
