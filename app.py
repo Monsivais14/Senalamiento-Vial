@@ -49,8 +49,81 @@ def obtener_ip():
     except Exception:
         return "127.0.0.1"
 
+
+# Función para actualizar la imagen en la interfaz gráfica
+def actualizar_imagen(nombre_senalamiento):
+    if state.window:
+        imagen_path = f"static/{nombre_senalamiento}.webp"
+        try:
+            img = Image.open(imagen_path)
+
+            # Obtener las dimensiones de la ventana
+            window_width = state.window.winfo_width()
+            window_height = state.window.winfo_height()
+
+            # Mantener la proporción de la imagen
+            img_width, img_height = img.size
+            aspect_ratio = img_width / img_height
+
+            if window_width / window_height > aspect_ratio:
+                # Si la relación de aspecto de la ventana es mayor que la de la imagen
+                new_width = int(window_height * aspect_ratio)
+                new_height = window_height
+            else:
+                # Si la relación de aspecto de la ventana es menor que la de la imagen
+                new_width = window_width
+                new_height = int(window_width / aspect_ratio)
+
+            # Redimensionar la imagen manteniendo la proporción
+            img = img.resize((new_width, new_height), Image.ANTIALIAS)
+
+            img_tk = ImageTk.PhotoImage(img)
+
+            # Si no existe la etiqueta de la imagen, crearla
+            if not state.image_label:
+                state.image_label = tk.Label(state.window, image=img_tk)
+                state.image_label.image = img_tk  # Guardar referencia para que no se elimine
+                state.image_label.pack(fill=tk.BOTH, expand=True)
+            else:
+                # Actualizar la imagen de la etiqueta
+                state.image_label.configure(image=img_tk)
+                state.image_label.image = img_tk  # Actualizar la referencia de la imagen
+
+            # Eliminar la etiqueta de texto si ya está visible
+            if state.label:
+                state.label.destroy()
+                state.label = None
+
+        except FileNotFoundError:
+            print(f"Imagen no encontrada: {imagen_path}")
+
 # Función para actualizar la interfaz
 def actualizar_interfaz():
+    if state.window:
+        ip = obtener_ip()
+
+        # Si no se ha recibido 'typeBase' y 'nameBase', mostrar texto
+        if state.typeBase is None:
+            texto = f"{ip}:5500/templates/base.html"
+        elif state.typeBase == "base":
+            # Mostrar la imagen correspondiente
+            actualizar_imagen(state.nameBase)
+        
+        # Actualizar texto si no se muestra imagen
+        if not state.image_label:
+            if not state.label:
+                state.label = tk.Label(
+                    state.window,
+                    text=texto,
+                    fg="white",
+                    bg="black",
+                    font=("Arial", 40),
+                    justify=tk.LEFT
+                )
+                state.label.pack(expand=True)
+            else:
+                state.label.config(text=texto)
+        state.window.update()
     if state.window:
         ip = obtener_ip()
 
@@ -185,37 +258,40 @@ def comparacionCondicional(hum, temp, lluv, hora):
             # Sensores {hum} {temp} {lluv} 
             # programacion state.{var}
 
+            cambio = False
+
             # Condicional de lluvia
             # primero detecta si esta seleccionada la lluvia, despues realiza la comparacion
             if state.lluvia:
                 if state.lluvia == lluv:
-                    # Aqui ira el boolean de cambio de tipo de senalamiento
-                    print("detecto lluvia")
+                    cambio = True
 
             # Condicional de Hora
             # primero comprueba si este seleccionada la hora
             if state.horaInicio != None:
                 # Verificar si la hora está dentro del rango en formato 24 horas
                 if state.horaInicio <= hora <= state.horaFin:
-                    # Aqui ira el boolean de cambio de tipo de senalamiento
-                    print("La hora está dentro del rango.")
-                else:
-                    print("La hora está fuera del rango.")
+                    cambio = True
 
             # Condicional de humedad
             # primero comprueba si esta seleccionada humedad
             if state.humidity != None:
                 if hum >= state.humidity:
-                    # Aqui ira el boolean de cambio de tipo de senalamiento
-                    print("Humedad activa")
+                    cambio = True
             
             # Condicional de temperatura
             # primero comprueba si esta seleccionada temperatura
             if state.temperature != None:
                 if temp >= state.temperature:
-                    # Aqui ira el boolean de cambio de tipo de senalamiento
-                    print("Temperatura activa")
+                    cambio = True
 
+            if cambio:
+                actualizar_imagen(state.nameCondicional)
+            else:
+                actualizar_imagen(state.nameBase)
+
+
+# Interfaz gráfica
 def interfaz_grafica():
     # Configurar la ventana
     state.window = tk.Tk()
@@ -233,6 +309,20 @@ def interfaz_grafica():
         justify=tk.LEFT
     )
     state.label.pack(expand=True)
+
+    # Actualizar la interfaz inicial
+    actualizar_interfaz()
+
+    # Cerrar ventana con Escape
+    state.window.bind("<Escape>", lambda e: state.window.destroy())
+    state.window.mainloop()
+
+    # Actualizar la interfaz inicial
+    actualizar_interfaz()
+
+    # Cerrar ventana con Escape
+    state.window.bind("<Escape>", lambda e: state.window.destroy())
+    state.window.mainloop()
 
     # Actualizar la interfaz inicial
     actualizar_interfaz()
