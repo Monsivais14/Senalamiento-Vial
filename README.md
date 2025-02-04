@@ -21,6 +21,8 @@ Diseñar y construir el prototipo a escala para la muestra del sistema propuesto
 - Resistencia
 
 ## Imagen del circuito
+![Circuito del proyecto](/Circuito.png)
+
 
 ## Instalación y uso
 1. Clona el repositorio:
