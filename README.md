@@ -37,7 +37,7 @@ Diseñar y construir el prototipo a escala para la muestra del sistema propuesto
    ```bash
    sudo Python3 app.py
    ```
-4. Conectate con VSC usando SSH al orange pi y abre base.html con Ooen Live Server
+4. Conectate con VSC usando SSH al orange pi y abre base.html con Open Live Server
 5. Entra a la ruta que despliega el Backend en pantalla para obtener acceso a la pagina web
 6. Configura el señalamiento
 
@@ -45,6 +45,8 @@ Diseñar y construir el prototipo a escala para la muestra del sistema propuesto
 Este proyecto es crucial para abordar la falta de cultura vial y adaptar la señalización vial a los cambios climáticos y situaciones específicas en las carreteras. En la actualidad, no existen señalamientos viales eficientes que se actualicen inteligentemente para reducir la velocidad máxima permitida durante condiciones climáticas adversas como la lluvia o la niebla, una tarea esencial para prevenir accidentes.
 La capacidad de programar señalizaciones preventivas, restrictivas, informativas y turísticas brinda versatilidad a la señalización vial, mejorando la seguridad en áreas específicas. Por ejemplo, en una carretera con construcción, el letrero se encargará de notificar la disminución de velocidad y mostrar la señal de obra en construcción. En una zona escolar, podría notificar la reducción de velocidad durante las horas de entrada y salida escolar y mostrar señalización de cruce peatonal o zona escolar.
 
-## Contribución
-Instrucciones para contribuir al proyecto.
-
+## Futuras Mejoras
+- Uso de paneles solares para alimentar los dispositivos y hacerlos más sostenibles.
+- Expansión del sistema con más sensores para detectar otros factores ambientales como viento y visibilidad.
+- Integración con sistemas municipales de control de tráfico para sincronización en tiempo real.
+- Mejoras en la interfaz de usuario para hacerla más intuitiva y accesible.
