@@ -27,7 +27,7 @@ Diseñar y construir el prototipo a escala para la muestra del sistema propuesto
 ## Instalación y uso
 1. Clona el repositorio:
    ```bash
-   [git clone https://github.com/tu-usuario/tu-proyecto.git](https://github.com/Monsivais14/Senalamiento-Vial.git)](https://github.com/Monsivais14/Senalamiento-Vial.git)
+   git clone https://github.com/Monsivais14/Senalamiento-Vial.git
    ```
 2. Accede a la carpeta:
    ```bash
